@@ -1,0 +1,43 @@
+services:
+  mariadb:
+    image: mariadb:10.11
+    container_name: consumables-mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: consumables_db
+      MYSQL_USER: consumables_user
+      MYSQL_PASSWORD: consumables_pass
+    ports:
+      - "3310:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: consumables-app
+    restart: unless-stopped
+    ports:
+      - "3030:3030"
+    environment:
+      PORT: "3030"
+      DB_HOST: "mariadb"
+      DB_PORT: "3306"
+      DB_USER: "consumables_user"
+      DB_PASSWORD: "consumables_pass"
+      DB_NAME: "consumables_db"
+      NODE_ENV: "production"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+volumes:
+  mariadb_data:

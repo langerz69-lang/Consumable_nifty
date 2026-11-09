@@ -1,0 +1,93 @@
+{
+  "projectInfo": {
+    "description": "Internal consumables ordering app with roles for Production and Logistics.",
+    "roles": ["LOGISTICS", "PRODUCTION"]
+  },
+  "collections": {
+    "categories": {
+      "documentId": "Auto-generated",
+      "description": "Categories for consumables.",
+      "fields": {
+        "name": { "type": "string", "description": "Category name" }
+      }
+    },
+    "users": {
+      "documentId": "User UID from Firebase Auth",
+      "description": "Stores user profiles and role assignments.",
+      "fields": {
+        "name": { "type": "string", "description": "Full name of the user" },
+        "email": { "type": "string", "description": "Email address" },
+        "role": { "type": "string", "description": "User role: LOGISTICS or PRODUCTION" },
+        "areaId": { "type": "string", "description": "ID of the production area (null for Logistics)", "nullable": true }
+      }
+    },
+    "areas": {
+      "documentId": "Auto-generated",
+      "description": "Production areas.",
+      "fields": {
+        "name": { "type": "string", "description": "Area name (e.g., Assembly Line A)" },
+        "budgetLimit": { "type": "number", "description": "Total budget allowed" },
+        "currentSpend": { "type": "number", "description": "Current total spend" }
+      }
+    },
+    "products": {
+      "documentId": "Auto-generated",
+      "description": "Catalog of consumables.",
+      "fields": {
+        "name": { "type": "string", "description": "Product name" },
+        "sku": { "type": "string", "description": "Stock Keeping Unit ID" },
+        "stockLevel": { "type": "number", "description": "Current quantity in stock" },
+        "minStockThreshold": { "type": "number", "description": "Low stock warning threshold" },
+        "unitCost": { "type": "number", "description": "Cost per unit" },
+        "isAdr": { "type": "boolean", "description": "Is this a Dangerous Good?" },
+        "adrScore": { "type": "number", "description": "Compliance score per unit" },
+        "allowedAreaIds": { "type": "array", "items": { "type": "string" }, "description": "Areas allowed to order this product" }
+      }
+    },
+    "orders": {
+      "documentId": "Auto-generated",
+      "description": "Orders placed by production teams.",
+      "fields": {
+        "userId": { "type": "string", "description": "ID of the user who placed the order" },
+        "areaId": { "type": "string", "description": "Area ID the order is for" },
+        "status": { "type": "string", "description": "PENDING, PICKED, or DELIVERED" },
+        "totalCost": { "type": "number", "description": "Total cost of the order" },
+        "totalAdrScore": { "type": "number", "description": "Total ADR score of the order" },
+        "createdAt": { "type": "timestamp", "description": "When the order was placed" },
+        "deliveryNoteGenerated": { "type": "boolean", "description": "Whether a delivery note was generated" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "map",
+            "fields": {
+              "productId": { "type": "string" },
+              "name": { "type": "string" },
+              "quantity": { "type": "number" },
+              "unitCost": { "type": "number" },
+              "adrScore": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "suppliers": {
+      "documentId": "Auto-generated",
+      "description": "Approved material and consumables suppliers.",
+      "fields": {
+        "name": { "type": "string", "description": "Supplier name" }
+      }
+    },
+    "email_logs": {
+      "documentId": "Auto-generated",
+      "description": "Dispatched order notification logs.",
+      "fields": {
+        "orderId": { "type": "string", "description": "ID of related order" },
+        "areaName": { "type": "string", "description": "Area recipient name" },
+        "notificationEmail": { "type": "string", "description": "Target email address" },
+        "status": { "type": "string", "description": "Delivery status: sent, failed, or simulated" },
+        "sentAt": { "type": "number", "description": "Timestamp in milliseconds" }
+      }
+    }
+  }
+}
+

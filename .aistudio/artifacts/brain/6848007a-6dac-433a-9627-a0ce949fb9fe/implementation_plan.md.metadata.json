@@ -1,0 +1,6 @@
+{
+  "summary": "Complete architectural migration plan to decouple Consumables Hub from Firebase Firestore and Auth, replacing them with a local MariaDB database service and REST API. Covers two-container Docker Compose configuration (App on port 3030, MariaDB on port 3310), bundled local offline assets, full database schema with pre-seeded demonstration records, server API endpoints, and updated client data stores.",
+  "updatedAt": "2026-11-06T13:24:59.318453021Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

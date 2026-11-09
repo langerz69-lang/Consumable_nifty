@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Development mode: Allow all reads and writes while login is temporarily removed.
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Remix Consumables App",
+  "description": "Consumables inventory, internal catalog ordering, and logistics management system for manufacturing operations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
